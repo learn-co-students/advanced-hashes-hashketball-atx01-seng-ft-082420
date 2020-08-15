@@ -1,3 +1,5 @@
+require 'pry'
+
 # Write your code below game_hash
 def game_hash
   {
@@ -126,4 +128,100 @@ def game_hash
   }
 end
 
-# Write code here
+# This method will return the points scored by each player on each team
+
+def num_points_scored(player_name)
+  game_hash.each do |location, team_data|
+    team_data[:players].each do |attributes|
+      if attributes[:player_name] == player_name
+        return attributes[:points]
+      end
+    end
+  end
+end
+
+# This method will return the shoe size of each player
+
+def shoe_size(player_name)
+  game_hash.each do |location, team_data|
+    team_data[:players].each do |attributes|
+      if attributes[:player_name] == player_name
+        return attributes[:shoe]
+      end
+    end
+  end
+end
+
+# This method will return the colors of each team
+
+def team_colors(team_name)
+  game_hash.each do |location, team_data|
+    if team_data[:team_name] == team_name
+      return team_data[:colors].to_a 
+    end
+  end
+end
+
+# This method will call for each team name
+
+def team_names
+  game_hash.map do |location, team_data|
+    team_data[:team_name]
+  end
+end
+
+# This method will return each player's numbers
+
+def player_numbers(team_name)
+  results = []
+  
+  game_hash.each do |location, team_data|
+    if team_data[:team_name] == team_name
+      team_data.each do |attributes, data|
+        if attributes == :players
+          data.each do |data_item|
+            results << data_item[:number]
+          end
+        end
+      end
+    end
+  end
+  return results
+end
+
+# This method will return each player's stats 
+
+def player_stats(player_name)
+  game_hash.each do |location, team_data|
+    team_data.each do |attributes, data|
+      if attributes == :players
+        data.each do |data_item|
+          if player_name == data_item[:player_name]
+            return data_item
+          end
+        end
+      end
+    end
+  end
+end
+
+# This method will return the amount of rebounds for the largest shoe size.
+
+# Home: Mason, shoe: 19, rebound: 11, hash[3]
+
+def big_shoe_rebounds
+  # Set two objects to equal integer values of 0 to be called/changed by the method
+  biggest_shoe_size = 0
+  number_of_rebounds = 0
+  
+  game_hash.each do |location, team_data|
+    team_data[:players].each do |attributes| # Calls the stats of each player within the :players array 
+      if attributes[:shoe] > biggest_shoe_size # Finds and calls the largest integer value in the shoe key
+        biggest_shoe_size = attributes[:shoe] # Sets value for biggest_shoe_size to equal the shoe value
+        number_of_rebounds = attributes[:rebounds] # Sets value for number_of_rebounds to equal the rebounds value
+      end
+    end
+  end
+  return number_of_rebounds
+end
+
